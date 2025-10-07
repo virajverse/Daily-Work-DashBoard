@@ -1,0 +1,13 @@
+{
+  "name": "Daily Work Dashboard",
+  "short_name": "Daily Work",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0b1220",
+  "theme_color": "#0ea5e9",
+  "description": "60-Day Client Plan Dashboard - Task tracking, lead management, and daily reminders by Taliyo Technologies.",
+  "icons": [
+    { "src": "/icons/icon-192.jpg", "sizes": "192x192", "type": "image/jpeg", "purpose": "any maskable" },
+    { "src": "/icons/icon-512.jpg", "sizes": "512x512", "type": "image/jpeg", "purpose": "any maskable" }
+  ]
+}
