@@ -267,6 +267,44 @@ Edit `vercel.json` to change when daily reminders are sent:
 
 ---
 
+## 💾 Data Storage
+
+### Local File Storage
+
+Your data is stored in the `local-data/` folder as JSON files:
+
+- **Location:** `<project-root>/local-data/`
+- **Files:** `tasks.json`, `leads.json`
+- **Privacy:** Folder is git-ignored, your data stays private
+- **Backup:** Simply copy the folder to backup your data
+
+### Backup Your Data
+
+```bash
+# Create backup
+cp -r local-data local-data-backup-$(date +%Y%m%d)
+
+# Restore from backup
+cp -r local-data-backup-20250108/* local-data/
+```
+
+### Access Your Data
+
+You can directly access and edit the JSON files:
+
+```bash
+# View tasks
+cat local-data/tasks.json
+
+# View leads
+cat local-data/leads.json
+
+# Edit manually (use any text editor)
+code local-data/tasks.json
+```
+
+---
+
 ## 💡 Usage Examples
 
 ### 1️⃣ Adding a Task
@@ -317,6 +355,10 @@ curl -X GET https://your-app.vercel.app/api/cron/daily-reminder \
 
 ```
 Daily-Work-DashBoard/
+├── 📁 local-data/                    # 🔒 Your data storage (git-ignored)
+│   ├── tasks.json                    # Tasks data
+│   ├── leads.json                    # Leads data
+│   └── README.md                     # Data backup guide
 ├── 📁 app/
 │   ├── 📁 api/
 │   │   ├── 📁 cron/
@@ -443,6 +485,16 @@ Add these in **Vercel Dashboard → Settings → Environment Variables:**
 ✅ **Automatic!** Vercel reads `vercel.json` and sets up cron jobs automatically.
 
 Check logs: **Vercel Dashboard → Deployments → Functions → Logs**
+
+### Data Storage on Vercel
+
+The app automatically uses **Vercel KV** (Redis) for production storage:
+
+1. Create a Vercel KV database in your project
+2. Vercel automatically adds KV environment variables
+3. Your data is stored securely in the cloud
+
+**📖 Detailed Guide:** [VERCEL_DEPLOYMENT.md](./VERCEL_DEPLOYMENT.md)
 
 ---
 

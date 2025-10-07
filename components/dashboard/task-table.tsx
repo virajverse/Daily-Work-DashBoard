@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { useLocalList, type TaskItem } from "@/lib/local-store"
+import { useFileStore, type TaskItem } from "@/lib/file-store"
 import { cn } from "@/lib/utils"
 import Papa from "papaparse"
 import jsPDF from "jspdf"
@@ -25,7 +25,7 @@ const emptyRow: TaskItem = {
 }
 
 export function TaskTable() {
-  const { data, push, update, remove, set } = useLocalList<TaskItem>("tasks", [])
+  const { data, push, update, remove, set, loading } = useFileStore<TaskItem>("tasks", [])
   const [draft, setDraft] = useState<TaskItem>(emptyRow)
 
   const fileRef = useRef<HTMLInputElement>(null)
@@ -126,6 +126,14 @@ export function TaskTable() {
       },
     })
     doc.save("tasks.pdf")
+  }
+
+  if (loading) {
+    return (
+      <div className="p-8 text-center text-muted-foreground">
+        Loading tasks...
+      </div>
+    )
   }
 
   return (
@@ -233,8 +241,8 @@ function EditableTaskRow({
   onRemove,
 }: {
   row: TaskItem
-  onUpdate: ReturnType<typeof useLocalList<TaskItem>>["update"]
-  onRemove: ReturnType<typeof useLocalList<TaskItem>>["remove"]
+  onUpdate: ReturnType<typeof useFileStore<TaskItem>>["update"]
+  onRemove: ReturnType<typeof useFileStore<TaskItem>>["remove"]
 }) {
   const [local, setLocal] = useState(row)
   const changed = JSON.stringify(local) !== JSON.stringify(row)

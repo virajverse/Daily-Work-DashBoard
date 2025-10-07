@@ -1,11 +1,11 @@
 "use client"
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { useLocalList, type TaskItem, type LeadItem, formatINR } from "@/lib/local-store"
+import { useFileStore, type TaskItem, type LeadItem, formatINR } from "@/lib/file-store"
 
 export function SummaryCards() {
-  const { data: tasks } = useLocalList<TaskItem>("tasks", [])
-  const { data: leads } = useLocalList<LeadItem>("leads", [])
+  const { data: tasks, loading: tasksLoading } = useFileStore<TaskItem>("tasks", [])
+  const { data: leads, loading: leadsLoading } = useFileStore<LeadItem>("leads", [])
 
   const totalClients = leads.filter((l) => l.status === "Closed").length
   const totalRevenue = leads
@@ -21,6 +21,8 @@ export function SummaryCards() {
     { title: "Active Leads", value: String(activeLeads) },
   ]
 
+  const loading = tasksLoading || leadsLoading
+
   return (
     <>
       {items.map((it) => (
@@ -29,7 +31,9 @@ export function SummaryCards() {
             <CardTitle className="text-sm font-medium text-muted-foreground">{it.title}</CardTitle>
           </CardHeader>
           <CardContent className="pt-0">
-            <div className="text-2xl font-semibold">{it.value}</div>
+            <div className="text-2xl font-semibold">
+              {loading ? "..." : it.value}
+            </div>
           </CardContent>
         </Card>
       ))}
