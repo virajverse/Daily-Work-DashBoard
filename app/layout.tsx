@@ -8,7 +8,7 @@ const geistSans = GeistSans({ subsets: ["latin"], variable: "--font-geist-sans" 
 const geistMono = GeistMono({ subsets: ["latin"], variable: "--font-geist-mono" })
 
 export const metadata: Metadata = {
-  title: "Daily Work Dashboard",
+  title: "Daily Work DashBoard",
   description: "60-Day Client Plan Dashboard by Taliyo Technologies",
   generator: "Taliyo Technologies",
 }

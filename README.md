@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🚀 Daily Work Dashboard
+# 🚀 Daily Work DashBoard
 
 ### *Your 60-Day Success Blueprint, Automated* ⚡
 
@@ -21,7 +21,7 @@
 
 ## 📑 Table of Contents
 
-- [✨ What is Daily Work Dashboard?](#-what-is-daily-work-dashboard)
+- [✨ What is Daily Work DashBoard?](#-what-is-daily-work-dashboard)
 - [🎬 Screenshots & Demo](#-screenshots--demo)
 - [🔥 Features](#-features)
 - [🛠️ Tech Stack](#️-tech-stack)
@@ -38,9 +38,9 @@
 
 ---
 
-## ✨ What is Daily Work Dashboard?
+## ✨ What is Daily Work DashBoard?
 
-**Daily Work Dashboard** is not just another task manager—it's your *intelligent work companion* designed specifically for agencies and consultants running 60-day client acquisition plans.
+**Daily Work DashBoard** is not just another task manager—it's your *intelligent work companion* designed specifically for agencies and consultants running 60-day client acquisition plans.
 
 ### 🎯 The Problem We Solve
 
@@ -150,10 +150,10 @@ Get up and running in 60 seconds:
 
 ```bash
 # Clone the repository
-git clone https://github.com/taliyotech/daily-work-dashboard.git
+git clone https://github.com/virajverse/Daily-Work-DashBoard.git
 
 # Navigate to project
-cd daily-work-dashboard
+cd Daily-Work-DashBoard
 
 # Install dependencies
 npm install
@@ -183,8 +183,8 @@ npm run dev
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/taliyotech/daily-work-dashboard.git
-cd daily-work-dashboard
+git clone https://github.com/virajverse/Daily-Work-DashBoard.git
+cd Daily-Work-DashBoard
 
 # 2. Install dependencies
 npm install
@@ -316,7 +316,7 @@ curl -X GET https://your-app.vercel.app/api/cron/daily-reminder \
 ## 📂 Project Structure
 
 ```
-daily-work-dashboard/
+Daily-Work-DashBoard/
 ├── 📁 app/
 │   ├── 📁 api/
 │   │   ├── 📁 cron/
@@ -406,7 +406,7 @@ graph LR
 
 ### Deploy to Vercel (Recommended)
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/taliyotech/daily-work-dashboard)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/virajverse/Daily-Work-DashBoard)
 
 **Manual Deployment:**
 
@@ -452,7 +452,7 @@ We love contributions! Here's how you can help:
 
 ### 🐛 Found a Bug?
 
-1. Check [existing issues](https://github.com/taliyotech/daily-work-dashboard/issues)
+1. Check [existing issues](https://github.com/virajverse/Daily-Work-DashBoard/issues)
 2. Create a new issue with:
    - Clear title
    - Steps to reproduce
@@ -461,7 +461,7 @@ We love contributions! Here's how you can help:
 
 ### 💡 Have a Feature Idea?
 
-1. Open a [feature request](https://github.com/taliyotech/daily-work-dashboard/issues/new)
+1. Open a [feature request](https://github.com/virajverse/Daily-Work-DashBoard/issues/new)
 2. Describe the feature and use case
 3. We'll discuss and prioritize!
 
