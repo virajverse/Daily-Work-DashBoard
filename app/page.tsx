@@ -19,11 +19,13 @@ export default async function DashboardPage() {
   }
 
   return (
-    <main className="min-h-dvh p-4 md:p-6">
-      <header className="flex items-center justify-between gap-3 mb-4">
-        <h1 className="text-xl md:text-2xl font-semibold text-balance">Taliyo Technologies — 60-Day Client Plan</h1>
+    <main className="min-h-dvh p-4 md:p-6 max-w-[1600px] mx-auto">
+      <header className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-6">
+        <h1 className="text-lg sm:text-xl md:text-2xl font-semibold text-balance">
+          Taliyo Technologies — 60-Day Client Plan
+        </h1>
         <form action={onLogout}>
-          <Button variant="secondary" type="submit" aria-label="Logout">
+          <Button variant="secondary" type="submit" aria-label="Logout" className="w-full sm:w-auto">
             Logout
           </Button>
         </form>

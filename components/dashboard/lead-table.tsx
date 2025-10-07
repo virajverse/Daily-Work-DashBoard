@@ -201,23 +201,31 @@ function EditableLeadRow({
           onChange={(e) => setLocal((d) => ({ ...d, date: e.target.value }))}
         />
       </TableCell>
-      <TableCell className="text-right space-x-2">
-        <Button
-          variant="secondary"
-          size="sm"
-          disabled={!changed}
-          onClick={() =>
-            onUpdate(
-              (it) => it.id === row.id,
-              () => ({ ...local, value: Number(local.value) || 0 }),
-            )
-          }
-        >
-          Save
-        </Button>
-        <Button variant="destructive" size="sm" onClick={() => onRemove((it) => it.id === row.id)}>
-          Delete
-        </Button>
+      <TableCell className="text-right">
+        <div className="flex flex-col sm:flex-row gap-2 sm:space-x-2 justify-end">
+          <Button
+            variant="secondary"
+            size="sm"
+            disabled={!changed}
+            onClick={() =>
+              onUpdate(
+                (it) => it.id === row.id,
+                () => ({ ...local, value: Number(local.value) || 0 }),
+              )
+            }
+            className="w-full sm:w-auto"
+          >
+            Save
+          </Button>
+          <Button 
+            variant="destructive" 
+            size="sm" 
+            onClick={() => onRemove((it) => it.id === row.id)}
+            className="w-full sm:w-auto"
+          >
+            Delete
+          </Button>
+        </div>
       </TableCell>
     </TableRow>
   )

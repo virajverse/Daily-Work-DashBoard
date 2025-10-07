@@ -201,10 +201,11 @@ export function NotificationsPanel() {
   return (
     <Card>
       <CardContent className="p-4">
-        <div className="flex flex-col md:flex-row md:items-end gap-4">
+        <div className="flex flex-col gap-4">
+          {/* Daily Reminder Toggle */}
           <div className="flex items-center gap-3">
             <Switch id="daily-enabled" checked={enabled} onCheckedChange={toggleEnabled} />
-            <div>
+            <div className="flex-1">
               <Label htmlFor="daily-enabled" className="block">
                 Daily Reminder
               </Label>
@@ -218,39 +219,57 @@ export function NotificationsPanel() {
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
-            <Label htmlFor="reminder-time">Time</Label>
-            <Input
-              id="reminder-time"
-              type="time"
-              value={time}
-              onChange={(e) => changeTime(e.target.value)}
-              className="w-36"
-            />
-            <Button variant="secondary" type="button" onClick={testNow} aria-label="Send test notification">
+          {/* Time Picker and Test Button */}
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+            <div className="flex items-center gap-2 w-full sm:w-auto">
+              <Label htmlFor="reminder-time" className="whitespace-nowrap">Time</Label>
+              <Input
+                id="reminder-time"
+                type="time"
+                value={time}
+                onChange={(e) => changeTime(e.target.value)}
+                className="w-36"
+              />
+            </div>
+            <Button 
+              variant="secondary" 
+              type="button" 
+              onClick={testNow} 
+              aria-label="Send test notification"
+              className="w-full sm:w-auto"
+            >
               Test Notification
             </Button>
           </div>
 
-          <div className="ml-auto flex items-center gap-2">
+          {/* Action Buttons */}
+          <div className="flex flex-col sm:flex-row gap-2">
             <Button 
               type="button" 
               onClick={subscribeToPush} 
               disabled={isPushSubscribed}
               variant={isPushSubscribed ? "secondary" : "default"}
+              className="w-full sm:flex-1"
             >
               {isPushSubscribed ? "Push Enabled ✓" : "Enable Push Notifications"}
             </Button>
-            <Button type="button" onClick={installApp} disabled={!installReady}>
+            <Button 
+              type="button" 
+              onClick={installApp} 
+              disabled={!installReady}
+              className="w-full sm:w-auto"
+            >
               {installReady ? "Install App" : "Installed/Unavailable"}
             </Button>
           </div>
+
+          {/* Status Message */}
+          <p className="text-sm text-muted-foreground">
+            {isPushSubscribed 
+              ? "✓ Push notifications enabled - App band hone pe bhi notifications aayenge" 
+              : "Note: Push notifications enable karo taki app band hone pe bhi notifications aaye"}
+          </p>
         </div>
-        <p className="mt-3 text-sm text-muted-foreground">
-          {isPushSubscribed 
-            ? "✓ Push notifications enabled - App band hone pe bhi notifications aayenge" 
-            : "Note: Push notifications enable karo taki app band hone pe bhi notifications aaye"}
-        </p>
       </CardContent>
     </Card>
   )

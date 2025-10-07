@@ -130,9 +130,9 @@ export function TaskTable() {
 
   return (
     <div className="overflow-x-auto">
-      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-3 p-3 border-b">
-        <div className="flex items-center gap-2">
-          <Button variant="secondary" size="sm" onClick={onImportClick}>
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-3 border-b">
+        <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+          <Button variant="secondary" size="sm" onClick={onImportClick} className="flex-1 sm:flex-none">
             Import CSV
           </Button>
           <input
@@ -143,16 +143,16 @@ export function TaskTable() {
             onChange={onFileChange}
             aria-hidden
           />
-          <Button variant="outline" size="sm" onClick={onExportCsv}>
+          <Button variant="outline" size="sm" onClick={onExportCsv} className="flex-1 sm:flex-none">
             Export CSV
           </Button>
-          <Button variant="outline" size="sm" onClick={onExportPdf}>
+          <Button variant="outline" size="sm" onClick={onExportPdf} className="flex-1 sm:flex-none">
             Export PDF
           </Button>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 w-full sm:w-auto">
           <Switch id="replace-import" checked={replaceOnImport} onCheckedChange={setReplaceOnImport} />
-          <Label htmlFor="replace-import">Replace on import</Label>
+          <Label htmlFor="replace-import" className="text-sm">Replace on import</Label>
         </div>
       </div>
 
@@ -267,23 +267,31 @@ function EditableTaskRow({
       <TableCell>
         <Input value={local.notes} onChange={(e) => setLocal((d) => ({ ...d, notes: e.target.value }))} />
       </TableCell>
-      <TableCell className="text-right space-x-2">
-        <Button
-          variant="secondary"
-          size="sm"
-          disabled={!changed}
-          onClick={() =>
-            onUpdate(
-              (it) => it.id === row.id,
-              () => local,
-            )
-          }
-        >
-          Save
-        </Button>
-        <Button variant="destructive" size="sm" onClick={() => onRemove((it) => it.id === row.id)}>
-          Delete
-        </Button>
+      <TableCell className="text-right">
+        <div className="flex flex-col sm:flex-row gap-2 sm:space-x-2 justify-end">
+          <Button
+            variant="secondary"
+            size="sm"
+            disabled={!changed}
+            onClick={() =>
+              onUpdate(
+                (it) => it.id === row.id,
+                () => local,
+              )
+            }
+            className="w-full sm:w-auto"
+          >
+            Save
+          </Button>
+          <Button 
+            variant="destructive" 
+            size="sm" 
+            onClick={() => onRemove((it) => it.id === row.id)}
+            className="w-full sm:w-auto"
+          >
+            Delete
+          </Button>
+        </div>
       </TableCell>
     </TableRow>
   )
