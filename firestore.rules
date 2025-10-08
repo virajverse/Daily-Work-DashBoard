@@ -1,0 +1,14 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Allow read/write to tasks collection
+    match /tasks/{taskId} {
+      allow read, write: if true;
+    }
+    
+    // Allow read/write to leads collection
+    match /leads/{leadId} {
+      allow read, write: if true;
+    }
+  }
+}

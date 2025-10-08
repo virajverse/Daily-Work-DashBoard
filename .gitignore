@@ -20,8 +20,15 @@ yarn-error.log*
 .env*
 !.env.example
 
-# local data storage
+# local data storage (not needed with Firebase)
 /local-data
+*.json
+
+# Firebase
+.firebase/
+.firebaserc
+firebase-debug.log
+firestore-debug.log
 
 # vercel
 .vercel
@@ -29,3 +36,14 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db

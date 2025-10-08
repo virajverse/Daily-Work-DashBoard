@@ -9,11 +9,18 @@ import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { useFileStore, type TaskItem } from "@/lib/file-store"
+import { useFirebaseStore, type TaskItem } from "@/lib/firebase-store"
 import { cn } from "@/lib/utils"
 import Papa from "papaparse"
 import jsPDF from "jspdf"
 import "jspdf-autotable"
+
+// Extend jsPDF type for autoTable
+declare module 'jspdf' {
+  interface jsPDF {
+    autoTable: (options: any) => jsPDF
+  }
+}
 
 const emptyRow: TaskItem = {
   id: "",
@@ -25,7 +32,7 @@ const emptyRow: TaskItem = {
 }
 
 export function TaskTable() {
-  const { data, push, update, remove, set, loading } = useFileStore<TaskItem>("tasks", [])
+  const { data, push, update, remove, set, loading } = useFirebaseStore<TaskItem>("tasks", [])
   const [draft, setDraft] = useState<TaskItem>(emptyRow)
   const [syncing, setSyncing] = useState(false)
 
@@ -66,7 +73,7 @@ export function TaskTable() {
     Papa.parse(file, {
       header: true,
       skipEmptyLines: true,
-      complete: (result) => {
+      complete: (result: any) => {
         const parsed = Array.isArray(result.data) ? (result.data as any[]) : []
         const rows = parsed.map(normalizeRow).filter(Boolean) as TaskItem[]
         if (rows.length === 0) {
@@ -270,8 +277,8 @@ function EditableTaskRow({
   onRemove,
 }: {
   row: TaskItem
-  onUpdate: ReturnType<typeof useFileStore<TaskItem>>["update"]
-  onRemove: ReturnType<typeof useFileStore<TaskItem>>["remove"]
+  onUpdate: ReturnType<typeof useFirebaseStore<TaskItem>>["update"]
+  onRemove: ReturnType<typeof useFirebaseStore<TaskItem>>["remove"]
 }) {
   const [local, setLocal] = useState(row)
   const changed = JSON.stringify(local) !== JSON.stringify(row)

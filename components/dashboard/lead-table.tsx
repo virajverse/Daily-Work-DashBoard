@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { useFileStore, type LeadItem } from "@/lib/file-store"
+import { useFirebaseStore, type LeadItem } from "@/lib/firebase-store"
 
 type LeadSource = "WhatsApp" | "Ads" | "Fiverr"
 type LeadStatus = "New" | "Contacted" | "Closed"
@@ -24,7 +24,7 @@ const sources: LeadSource[] = ["WhatsApp", "Ads", "Fiverr"]
 const statuses: LeadStatus[] = ["New", "Contacted", "Closed"]
 
 export function LeadTable() {
-  const { data, push, update, remove, set, loading } = useFileStore<LeadItem>("leads", [])
+  const { data, push, update, remove, set, loading } = useFirebaseStore<LeadItem>("leads", [])
   const [draft, setDraft] = useState<LeadItem>(emptyLead)
   const [syncing, setSyncing] = useState(false)
 
@@ -177,8 +177,8 @@ function EditableLeadRow({
   onRemove,
 }: {
   row: LeadItem
-  onUpdate: ReturnType<typeof useFileStore<LeadItem>>["update"]
-  onRemove: ReturnType<typeof useFileStore<LeadItem>>["remove"]
+  onUpdate: ReturnType<typeof useFirebaseStore<LeadItem>>["update"]
+  onRemove: ReturnType<typeof useFirebaseStore<LeadItem>>["remove"]
 }) {
   const [local, setLocal] = useState(row)
   const changed = JSON.stringify(local) !== JSON.stringify(row)

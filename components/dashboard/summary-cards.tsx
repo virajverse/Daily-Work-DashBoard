@@ -1,11 +1,11 @@
 "use client"
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { useFileStore, type TaskItem, type LeadItem, formatINR } from "@/lib/file-store"
+import { useFirebaseStore, type TaskItem, type LeadItem, formatINR } from "@/lib/firebase-store"
 
 export function SummaryCards() {
-  const { data: tasks, loading: tasksLoading } = useFileStore<TaskItem>("tasks", [])
-  const { data: leads, loading: leadsLoading } = useFileStore<LeadItem>("leads", [])
+  const { data: tasks, loading: tasksLoading } = useFirebaseStore<TaskItem>("tasks", [])
+  const { data: leads, loading: leadsLoading } = useFirebaseStore<LeadItem>("leads", [])
 
   const totalClients = leads.filter((l) => l.status === "Closed").length
   const totalRevenue = leads
