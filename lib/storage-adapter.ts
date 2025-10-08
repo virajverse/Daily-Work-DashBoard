@@ -14,8 +14,9 @@ export async function getFromKV(key: string) {
   try {
     const { kv } = await import('@vercel/kv')
     return await kv.get(key)
-  } catch {
-    return null
+  } catch (error) {
+    console.error('KV get error:', error)
+    throw error
   }
 }
 
@@ -26,8 +27,9 @@ export async function setToKV(key: string, value: any) {
     const { kv } = await import('@vercel/kv')
     await kv.set(key, value)
     return true
-  } catch {
-    return false
+  } catch (error) {
+    console.error('KV set error:', error)
+    throw error
   }
 }
 
@@ -39,8 +41,11 @@ export async function getFromFile(filePath: string) {
     const { promises: fs } = await import('fs')
     const data = await fs.readFile(filePath, 'utf-8')
     return JSON.parse(data)
-  } catch {
-    return null
+  } catch (error: any) {
+    // File not found is OK, return null
+    if (error.code === 'ENOENT') return null
+    console.error('File read error:', error)
+    throw error
   }
 }
 
@@ -61,7 +66,8 @@ export async function setToFile(filePath: string, value: any) {
     
     await fs.writeFile(filePath, JSON.stringify(value, null, 2), 'utf-8')
     return true
-  } catch {
-    return false
+  } catch (error) {
+    console.error('File write error:', error)
+    throw error
   }
 }

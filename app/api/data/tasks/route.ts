@@ -19,9 +19,13 @@ export async function GET() {
     }
 
     return NextResponse.json(data || [])
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error reading tasks:', error)
-    return NextResponse.json({ error: 'Failed to read tasks' }, { status: 500 })
+    return NextResponse.json({
+      error: 'Failed to read tasks',
+      message: error?.message || 'Unknown error',
+      storage: useKVStorage ? 'KV' : 'File'
+    }, { status: 500 })
   }
 }
 
@@ -44,8 +48,12 @@ export async function POST(request: NextRequest) {
     } else {
       throw new Error('Storage operation failed')
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error saving tasks:', error)
-    return NextResponse.json({ error: 'Failed to save tasks' }, { status: 500 })
+    return NextResponse.json({
+      error: 'Failed to save tasks',
+      message: error?.message || 'Unknown error',
+      storage: useKVStorage ? 'KV' : 'File'
+    }, { status: 500 })
   }
 }
