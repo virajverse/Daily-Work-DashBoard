@@ -27,6 +27,7 @@ const emptyRow: TaskItem = {
 export function TaskTable() {
   const { data, push, update, remove, set, loading } = useFileStore<TaskItem>("tasks", [])
   const [draft, setDraft] = useState<TaskItem>(emptyRow)
+  const [syncing, setSyncing] = useState(false)
 
   const fileRef = useRef<HTMLInputElement>(null)
   const [replaceOnImport, setReplaceOnImport] = useState(false)
@@ -128,6 +129,22 @@ export function TaskTable() {
     doc.save("tasks.pdf")
   }
 
+  const onSync = async () => {
+    setSyncing(true)
+    try {
+      const response = await fetch('/api/data/tasks')
+      if (response.ok) {
+        const serverData = await response.json()
+        set(serverData)
+      }
+    } catch (error) {
+      console.error('Sync failed:', error)
+      alert('Sync failed. Please try again.')
+    } finally {
+      setSyncing(false)
+    }
+  }
+
   if (loading) {
     return (
       <div className="p-8 text-center text-muted-foreground">
@@ -157,10 +174,22 @@ export function TaskTable() {
           <Button variant="outline" size="sm" onClick={onExportPdf} className="flex-1 sm:flex-none">
             Export PDF
           </Button>
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={onSync}
+            disabled={syncing}
+            className="flex-1 sm:flex-none"
+            title="Sync data from server"
+          >
+            {syncing ? "⏳ Syncing..." : "🔄 Sync"}
+          </Button>
         </div>
         <div className="flex items-center gap-2 w-full sm:w-auto">
           <Switch id="replace-import" checked={replaceOnImport} onCheckedChange={setReplaceOnImport} />
-          <Label htmlFor="replace-import" className="text-sm">Replace on import</Label>
+          <Label htmlFor="replace-import" className="text-sm" title="When ON: Delete existing tasks and import new ones. When OFF: Add imported tasks to existing ones.">
+            Replace on import
+          </Label>
         </div>
       </div>
 

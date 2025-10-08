@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Migrate LocalStorage Data</title>
+    <style>
+        body {
+            font-family: system-ui;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        button {
+            background: #0070f3;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background: #0051cc;
+        }
+        pre {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+        }
+        .success {
+            color: green;
+            font-weight: bold;
+        }
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔄 Migrate LocalStorage to File Storage</h1>
+    
+    <div>
+        <h2>Step 1: Export from Browser</h2>
+        <button onclick="exportData()">Export LocalStorage Data</button>
+        <p id="export-status"></p>
+        <pre id="export-data"></pre>
+    </div>
+
+    <div>
+        <h2>Step 2: Import to Server</h2>
+        <button onclick="importData()">Import to Server</button>
+        <p id="import-status"></p>
+    </div>
+
+    <script>
+        let exportedTasks = [];
+        let exportedLeads = [];
+
+        function exportData() {
+            try {
+                // Get data from localStorage
+                const tasksRaw = localStorage.getItem('tasks');
+                const leadsRaw = localStorage.getItem('leads');
+
+                exportedTasks = tasksRaw ? JSON.parse(tasksRaw) : [];
+                exportedLeads = leadsRaw ? JSON.parse(leadsRaw) : [];
+
+                const data = {
+                    tasks: exportedTasks,
+                    leads: exportedLeads
+                };
+
+                document.getElementById('export-data').textContent = JSON.stringify(data, null, 2);
+                document.getElementById('export-status').innerHTML = 
+                    `<span class="success">✅ Found ${exportedTasks.length} tasks and ${exportedLeads.length} leads</span>`;
+            } catch (error) {
+                document.getElementById('export-status').innerHTML = 
+                    `<span class="error">❌ Error: ${error.message}</span>`;
+            }
+        }
+
+        async function importData() {
+            try {
+                if (exportedTasks.length === 0 && exportedLeads.length === 0) {
+                    alert('Please export data first!');
+                    return;
+                }
+
+                // Import tasks
+                const tasksResponse = await fetch('/api/data/tasks', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(exportedTasks)
+                });
+
+                // Import leads
+                const leadsResponse = await fetch('/api/data/leads', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(exportedLeads)
+                });
+
+                if (tasksResponse.ok && leadsResponse.ok) {
+                    document.getElementById('import-status').innerHTML = 
+                        `<span class="success">✅ Successfully imported ${exportedTasks.length} tasks and ${exportedLeads.length} leads!</span>`;
+                    
+                    setTimeout(() => {
+                        alert('Data imported! Refresh your dashboard.');
+                        window.location.href = '/';
+                    }, 2000);
+                } else {
+                    throw new Error('Import failed');
+                }
+            } catch (error) {
+                document.getElementById('import-status').innerHTML = 
+                    `<span class="error">❌ Error: ${error.message}</span>`;
+            }
+        }
+    </script>
+</body>
+</html>

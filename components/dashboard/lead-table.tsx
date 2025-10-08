@@ -24,8 +24,9 @@ const sources: LeadSource[] = ["WhatsApp", "Ads", "Fiverr"]
 const statuses: LeadStatus[] = ["New", "Contacted", "Closed"]
 
 export function LeadTable() {
-  const { data, push, update, remove, loading } = useFileStore<LeadItem>("leads", [])
+  const { data, push, update, remove, set, loading } = useFileStore<LeadItem>("leads", [])
   const [draft, setDraft] = useState<LeadItem>(emptyLead)
+  const [syncing, setSyncing] = useState(false)
 
   const canAdd = useMemo(
     () => draft.name.trim().length > 0 && draft.service.trim().length > 0,
@@ -39,6 +40,22 @@ export function LeadTable() {
     setDraft({ ...emptyLead, date: new Date().toISOString().slice(0, 10) })
   }
 
+  const onSync = async () => {
+    setSyncing(true)
+    try {
+      const response = await fetch('/api/data/leads')
+      if (response.ok) {
+        const serverData = await response.json()
+        set(serverData)
+      }
+    } catch (error) {
+      console.error('Sync failed:', error)
+      alert('Sync failed. Please try again.')
+    } finally {
+      setSyncing(false)
+    }
+  }
+
   if (loading) {
     return (
       <div className="p-8 text-center text-muted-foreground">
@@ -49,6 +66,17 @@ export function LeadTable() {
 
   return (
     <div className="overflow-x-auto">
+      <div className="flex items-center justify-end gap-2 p-3 border-b">
+        <Button 
+          variant="outline" 
+          size="sm" 
+          onClick={onSync}
+          disabled={syncing}
+          title="Sync data from server"
+        >
+          {syncing ? "⏳ Syncing..." : "🔄 Sync"}
+        </Button>
+      </div>
       <Table>
         <TableHeader>
           <TableRow>
