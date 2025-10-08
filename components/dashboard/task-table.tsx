@@ -34,7 +34,6 @@ const emptyRow: TaskItem = {
 export function TaskTable() {
   const { data, push, update, remove, set, loading } = useFirebaseStore<TaskItem>("tasks", [])
   const [draft, setDraft] = useState<TaskItem>(emptyRow)
-  const [syncing, setSyncing] = useState(false)
 
   const fileRef = useRef<HTMLInputElement>(null)
   const [replaceOnImport, setReplaceOnImport] = useState(false)
@@ -136,20 +135,10 @@ export function TaskTable() {
     doc.save("tasks.pdf")
   }
 
-  const onSync = async () => {
-    setSyncing(true)
-    try {
-      const response = await fetch('/api/data/tasks')
-      if (response.ok) {
-        const serverData = await response.json()
-        set(serverData)
-      }
-    } catch (error) {
-      console.error('Sync failed:', error)
-      alert('Sync failed. Please try again.')
-    } finally {
-      setSyncing(false)
-    }
+  const onSync = () => {
+    // Firebase syncs automatically in real-time!
+    // Just show a message
+    alert('✅ Firebase syncs automatically! Your data is always up-to-date.')
   }
 
   if (loading) {
@@ -185,11 +174,10 @@ export function TaskTable() {
             variant="outline" 
             size="sm" 
             onClick={onSync}
-            disabled={syncing}
             className="flex-1 sm:flex-none"
-            title="Sync data from server"
+            title="Firebase syncs automatically in real-time"
           >
-            {syncing ? "⏳ Syncing..." : "🔄 Sync"}
+            ✅ Auto-Sync
           </Button>
         </div>
         <div className="flex items-center gap-2 w-full sm:w-auto">

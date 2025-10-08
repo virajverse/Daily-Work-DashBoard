@@ -26,7 +26,6 @@ const statuses: LeadStatus[] = ["New", "Contacted", "Closed"]
 export function LeadTable() {
   const { data, push, update, remove, set, loading } = useFirebaseStore<LeadItem>("leads", [])
   const [draft, setDraft] = useState<LeadItem>(emptyLead)
-  const [syncing, setSyncing] = useState(false)
 
   const canAdd = useMemo(
     () => draft.name.trim().length > 0 && draft.service.trim().length > 0,
@@ -40,20 +39,9 @@ export function LeadTable() {
     setDraft({ ...emptyLead, date: new Date().toISOString().slice(0, 10) })
   }
 
-  const onSync = async () => {
-    setSyncing(true)
-    try {
-      const response = await fetch('/api/data/leads')
-      if (response.ok) {
-        const serverData = await response.json()
-        set(serverData)
-      }
-    } catch (error) {
-      console.error('Sync failed:', error)
-      alert('Sync failed. Please try again.')
-    } finally {
-      setSyncing(false)
-    }
+  const onSync = () => {
+    // Firebase syncs automatically in real-time!
+    alert('✅ Firebase syncs automatically! Your data is always up-to-date.')
   }
 
   if (loading) {
@@ -71,10 +59,9 @@ export function LeadTable() {
           variant="outline" 
           size="sm" 
           onClick={onSync}
-          disabled={syncing}
-          title="Sync data from server"
+          title="Firebase syncs automatically in real-time"
         >
-          {syncing ? "⏳ Syncing..." : "🔄 Sync"}
+          ✅ Auto-Sync
         </Button>
       </div>
       <Table>
